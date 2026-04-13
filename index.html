@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memory</title>
+    <title>Memory - Ready to play?</title>
 </head>
 
 <body>
-    <section id="field">
-        <button class="card">
-            <div class="card__inner">
-                <div class="card__face card__face--front"></div>
-                <div class="card__face card__face--back"></div>
-            </div>
-        </button>
-    </section>
+    <main class="landing-page">
+        <!-- Decorative background icon -->
+        <img src="/assets/controller.svg" alt="" class="landing-page__bg-icon">
 
+        <section class="landing-page__content">
+            <span class="text-secondary">It’s play time.</span>
+            <h1 class="heading-primary">Ready to play?</h1>
+            
+            <a href="#" class="btn-play">
+                <img src="/assets/controller.svg" alt="" class="icon-controller">
+                <span>Play</span>
+                <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+        </section>
+    </main>
 
     <script type="module" src="/src/main.ts"></script>
 </body>
