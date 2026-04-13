@@ -134,6 +134,27 @@
         </div>
     </section>
 
+    <section id="game-page" class="game-page hidden">
+        <header class="game-header">
+            <div class="score-container" id="score-container">
+                <!-- Dynamically populated -->
+            </div>
+            <div class="current-player-display">
+                Current player: <span id="current-player-icon" class="icon"><img src="/assets/chess-piece-white.svg" alt="Player" width="24" height="24"></span>
+            </div>
+            <button class="btn-exit" id="btn-exit">
+                <img src="/assets/button-exit/exit.svg" alt="Exit" width="20" height="20">
+                Exit game
+            </button>
+        </header>
+
+        <div class="game-board-container">
+            <div class="game-board" id="game-board">
+                <!-- Cards will be generated here -->
+            </div>
+        </div>
+    </section>
+
     <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
