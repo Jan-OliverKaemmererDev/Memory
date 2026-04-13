@@ -103,7 +103,7 @@ function startGame() {
             card.className = 'memory-card'
             card.dataset.id = cardId.toString()
 
-            const frontImageUrl = `/assets/theme-card-pictures/${folder}/Front-${cardId}.svg`
+            const frontImageUrl = `/assets/theme-card-pictures/${folder}/front-${cardId}.svg`
 
             card.innerHTML = `
                 <div class="card-inner">
