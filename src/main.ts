@@ -108,7 +108,7 @@ function startGame() {
         foods: 'food'
     }
     const folder = themeFolderMap[selectedTheme]
-    const backImageUrl = `/assets/theme-card-pictures/${folder}/back.svg`
+    const backImageUrl = `${import.meta.env.BASE_URL}assets/theme-card-pictures/${folder}/back.svg`
 
     updateScoreUI()
     updateTurnUI()
@@ -138,7 +138,7 @@ function startGame() {
             card.className = 'memory-card'
             card.dataset.id = cardId.toString()
 
-            const frontImageUrl = `/assets/theme-card-pictures/${folder}/front-${cardId}.svg`
+            const frontImageUrl = `${import.meta.env.BASE_URL}assets/theme-card-pictures/${folder}/front-${cardId}.svg`
 
             card.innerHTML = `
                 <div class="card-inner">
@@ -239,7 +239,7 @@ function handleGameFinished() {
         }
         
         if (winnerIconEl && winnerColor !== 'white') {
-            winnerIconEl.src = `/assets/chess-piece-${winnerColor}.svg`
+            winnerIconEl.src = `${import.meta.env.BASE_URL}assets/chess-piece-${winnerColor}.svg`
             winnerIconEl.style.display = 'block'
         } else if (winnerIconEl) {
             winnerIconEl.style.display = 'none'
@@ -299,10 +299,10 @@ function updateScoreUI() {
     if (scoreContainer) {
         scoreContainer.innerHTML = `
             <div class="score-player ${currentPlayer === 'blue' ? 'active' : ''}" style="color: #38bdf8;">
-                <span class="icon"><img src="/assets/chess-piece-blue.svg" alt="Blue" width="24" height="24"></span> Blue <span class="score-value" style="color: white; margin-left:8px;">${scoreBlue}</span>
+                <span class="icon"><img src="${import.meta.env.BASE_URL}assets/chess-piece-blue.svg" alt="Blue" width="24" height="24"></span> Blue <span class="score-value" style="color: white; margin-left:8px;">${scoreBlue}</span>
             </div>
             <div class="score-player ${currentPlayer === 'orange' ? 'active' : ''}" style="color: #fb923c;">
-                <span class="icon"><img src="/assets/chess-piece-orange.svg" alt="Orange" width="24" height="24"></span> Orange <span class="score-value" style="color: white; margin-left:8px;">${scoreOrange}</span>
+                <span class="icon"><img src="${import.meta.env.BASE_URL}assets/chess-piece-orange.svg" alt="Orange" width="24" height="24"></span> Orange <span class="score-value" style="color: white; margin-left:8px;">${scoreOrange}</span>
             </div>
         `
     }
@@ -311,7 +311,7 @@ function updateScoreUI() {
 function updateTurnUI() {
     const currentPlayerIcon = document.getElementById('current-player-icon')
     if (currentPlayerIcon) {
-        currentPlayerIcon.innerHTML = `<img src="/assets/chess-piece-${currentPlayer}.svg" alt="Player" width="24" height="24">`
+        currentPlayerIcon.innerHTML = `<img src="${import.meta.env.BASE_URL}assets/chess-piece-${currentPlayer}.svg" alt="Player" width="24" height="24">`
     }
     // Also re-render scores to update active highlight
     updateScoreUI()
@@ -331,22 +331,22 @@ function setupSettings() {
 
     const themeConfigs: Record<string, { img: string, gradient: string, label: string }> = {
         codevibe: {
-            img: '/assets/theme-preview-pictures/codevibe-theme.png',
+            img: './assets/theme-preview-pictures/codevibe-theme.png',
             gradient: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
             label: 'Code vibes'
         },
         gaming: {
-            img: '/assets/theme-preview-pictures/gaming-theme.png',
+            img: './assets/theme-preview-pictures/gaming-theme.png',
             gradient: 'linear-gradient(135deg, #881337 0%, #4c0519 100%)',
             label: 'Gaming'
         },
         daprojects: {
-            img: '/assets/theme-preview-pictures/DAprojects-theme.png',
+            img: './assets/theme-preview-pictures/DAprojects-theme.png',
             gradient: 'linear-gradient(135deg, #1e3a8a 0%, #172554 100%)',
             label: 'DA Projects'
         },
         foods: {
-            img: '/assets/theme-preview-pictures/foods-theme.png',
+            img: './assets/theme-preview-pictures/foods-theme.png',
             gradient: 'linear-gradient(135deg, #14532d 0%, #052e16 100%)',
             label: 'Foods'
         }
@@ -386,4 +386,4 @@ function setupSettings() {
     if (previewContainer) {
         previewContainer.style.background = themeConfigs['codevibe'].gradient
     }
-}
+}
