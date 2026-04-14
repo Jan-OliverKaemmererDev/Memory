@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -63,7 +65,7 @@
     width: 200px;
 
     &:hover {
-        background-color: darken(#63CDBB, 8%);
+        background-color: color.adjust(#63CDBB, $lightness: -8%);
     }
 }
 
@@ -81,5 +83,28 @@
     &:hover {
         background-color: #63CDBB;
         color: #ffffff;
+    }
+}
+
+.confetti-piece {
+    position: absolute;
+    top: -20px;
+    width: 10px;
+    height: 30px;
+    background-color: #fce18a;
+    opacity: 0;
+    animation: confetti-fall 3s ease-in-out infinite;
+    transform-origin: center;
+    border-radius: 2px;
+}
+
+@keyframes confetti-fall {
+    0% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(220px) rotate(360deg);
     }
 }

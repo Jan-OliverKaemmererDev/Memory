@@ -60,7 +60,17 @@ function setupNavigation() {
             exitModalOverlay.classList.remove('show')
             gamePage.classList.add('hidden')
             landingPage.classList.remove('hidden')
-            // TODO: Reset game state
+        })
+    }
+
+    const btnBackToStart = document.getElementById('btn-back-to-start')
+    const winnerModalOverlay = document.getElementById('winner-modal-overlay')
+    const gameOverModalOverlay = document.getElementById('game-over-modal-overlay')
+    if (btnBackToStart && winnerModalOverlay && landingPage && gamePage) {
+        btnBackToStart.addEventListener('click', () => {
+            winnerModalOverlay.classList.remove('show')
+            gamePage.classList.add('hidden')
+            landingPage.classList.remove('hidden')
         })
     }
 }
@@ -186,7 +196,79 @@ function disableCards() {
     resetBoard()
 
     if (pairsFound === totalPairs) {
-        setTimeout(() => alert('Game Finished!'), 500)
+        setTimeout(handleGameFinished, 500)
+    }
+}
+
+function handleGameFinished() {
+    const gameOverModal = document.getElementById('game-over-modal-overlay')
+    const winnerModal = document.getElementById('winner-modal-overlay')
+    
+    // Update Final Scores
+    const finalScoreBlue = document.getElementById('final-score-blue')
+    const finalScoreOrange = document.getElementById('final-score-orange')
+    if (finalScoreBlue) finalScoreBlue.textContent = scoreBlue.toString()
+    if (finalScoreOrange) finalScoreOrange.textContent = scoreOrange.toString()
+
+    // Show Game Over
+    if (gameOverModal) {
+        gameOverModal.classList.add('show')
+    }
+
+    // After 2s show Winner Screen
+    setTimeout(() => {
+        if (gameOverModal) gameOverModal.classList.remove('show')
+        
+        let winnerNameText = "It's a tie!"
+        let winnerColor = 'white'
+        
+        if (scoreBlue > scoreOrange) {
+            winnerNameText = 'BLUE PLAYER'
+            winnerColor = 'blue'
+        } else if (scoreOrange > scoreBlue) {
+            winnerNameText = 'ORANGE PLAYER'
+            winnerColor = 'orange'
+        }
+
+        const winnerNameEl = document.getElementById('winner-name')
+        const winnerIconEl = document.getElementById('winner-icon') as HTMLImageElement
+
+        if (winnerNameEl) {
+            winnerNameEl.textContent = winnerNameText
+            winnerNameEl.style.color = winnerColor === 'blue' ? '#38bdf8' : (winnerColor === 'orange' ? '#fb923c' : 'white')
+        }
+        
+        if (winnerIconEl && winnerColor !== 'white') {
+            winnerIconEl.src = `/assets/chess-piece-${winnerColor}.svg`
+            winnerIconEl.style.display = 'block'
+        } else if (winnerIconEl) {
+            winnerIconEl.style.display = 'none'
+        }
+
+        createConfetti()
+
+        if (winnerModal) {
+            winnerModal.classList.add('show')
+        }
+    }, 2000)
+}
+
+function createConfetti() {
+    const container = document.getElementById('confetti-container');
+    if (!container) return;
+    container.innerHTML = '';
+    const colors = ['#38bdf8', '#fb923c', '#63CDBB', '#EEFBF8'];
+    for (let i = 0; i < 60; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-piece';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 3 + 's';
+        if (Math.random() > 0.5) {
+             confetti.style.width = '8px';
+             confetti.style.height = '16px';
+        }
+        container.appendChild(confetti);
     }
 }
 

@@ -169,6 +169,33 @@
         </div>
     </div>
 
+    <!-- Game Over Modal -->
+    <div id="game-over-modal-overlay" class="modal-overlay" style="background: #3B3B3B;">
+        <div class="modal modal--game-over" style="background: transparent; border: none; box-shadow: none;">
+            <h2 class="game-over-title" style="font-size: 80px; font-weight: bold; color: #63CDBB; text-shadow: 2px 4px 6px rgba(0,0,0,0.5); margin-bottom: 40px; letter-spacing: 2px;">Game over</h2>
+            <div class="final-score-container" style="color: white; font-size: 20px;">
+                <p style="margin-bottom: 20px;">Final score</p>
+                <div class="final-scores" style="display: inline-flex; background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 8px; gap: 20px;">
+                    <span class="score-team blue" style="color: #38bdf8; display: flex; align-items: center; gap: 8px;"><img src="/assets/chess-piece-blue.svg" alt="" width="20"> Blue <span id="final-score-blue" style="font-weight: bold;">0</span></span>
+                    <span class="score-team orange" style="color: #fb923c; display: flex; align-items: center; gap: 8px;"><img src="/assets/chess-piece-orange.svg" alt="" width="20"> Orange <span id="final-score-orange" style="font-weight: bold;">0</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Winner Modal -->
+    <div id="winner-modal-overlay" class="modal-overlay" style="background: #3B3B3B;">
+        <div class="confetti-container" id="confetti-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 200px; overflow: hidden; pointer-events: none;"></div>
+        <div class="modal modal--winner" style="background: transparent; border: none; box-shadow: none; color: white;">
+            <p style="font-size: 24px; margin-bottom: 10px;">The winner is</p>
+            <h2 id="winner-name" style="font-size: 44px; text-transform: uppercase; font-weight: bold;">ORANGE PLAYER</h2>
+            <img id="winner-icon" src="/assets/chess-piece-orange.svg" alt="" style="width: 150px; margin: 40px auto; display: block;">
+            <div class="modal__actions">
+                <button id="btn-back-to-start" class="btn-modal-secondary" style="background: transparent; border-color: rgba(255,255,255,0.3); color: white;">Back to start</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="/src/main.ts"></script>
 </body>
 </html>
