@@ -1,0 +1,85 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.show {
+        opacity: 1;
+        pointer-events: auto;
+
+        .modal {
+            transform: scale(1); /* or slide, user requested slide from top */
+            transform: translateY(0);
+        }
+    }
+}
+
+.modal {
+    background: #ffffff;
+    width: 90%;
+    max-width: 500px;
+    padding: 50px 30px;
+    text-align: center;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: translateY(-100vh);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    font-family: inherit;
+
+    &__title {
+        color: #3B3B3B;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 40px;
+        line-height: 1.3;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+}
+
+.btn-modal-primary {
+    background-color: #63CDBB;
+    color: #ffffff;
+    border: none;
+    padding: 14px 24px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 200px;
+
+    &:hover {
+        background-color: darken(#63CDBB, 8%);
+    }
+}
+
+.btn-modal-secondary {
+    background-color: #EEFBF8;
+    color: #55CFB8;
+    border: 2px solid #63CDBB;
+    padding: 12px 24px; /* slightly smaller padding to compensate for border */
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 200px;
+
+    &:hover {
+        background-color: #63CDBB;
+        color: #ffffff;
+    }
+}

@@ -36,7 +36,9 @@
                     <!-- Themes -->
                     <div class="settings-group">
                         <div class="settings-group__label">
-                            <span class="icon">🎨</span>
+                            <span class="icon">
+                                <img src="/assets/palette.svg" alt="Theme Icon" style="width: 60%; height: 60%; object-fit: contain;">
+                            </span>
                             <h3>Game themes</h3>
                         </div>
                         <div class="settings-radios">
@@ -88,7 +90,9 @@
                     <!-- Board Size -->
                     <div class="settings-group">
                         <div class="settings-group__label">
-                            <span class="icon">🎴</span>
+                            <span class="icon">
+                                <img src="/assets/board-size.svg" alt="Board Size Icon" style="width: 60%; height: 60%; object-fit: contain;">
+                            </span>
                             <h3>Board size</h3>
                         </div>
                         <div class="settings-radios">
@@ -127,7 +131,7 @@
                     <span id="summary-size">16 cards</span>
                 </div>
                 <button class="btn-start" id="btn-start">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <img src="/assets/start-icon.svg" alt="Start Icon" width="24" height="24">
                     Start
                 </button>
             </footer>
@@ -151,9 +155,19 @@
         <div class="game-board-container">
             <div class="game-board" id="game-board">
                 <!-- Cards will be generated here -->
-            </div>
         </div>
     </section>
+
+    <!-- Exit Game Modal -->
+    <div id="exit-modal-overlay" class="modal-overlay">
+        <div class="modal">
+            <h2 class="modal__title">Are you sure you want to quit<br>the game?</h2>
+            <div class="modal__actions">
+                <button id="btn-back-to-game" class="btn-modal-primary">Back to game</button>
+                <button id="btn-confirm-exit" class="btn-modal-secondary">Exit game</button>
+            </div>
+        </div>
+    </div>
 
     <script type="module" src="/src/main.ts"></script>
 </body>

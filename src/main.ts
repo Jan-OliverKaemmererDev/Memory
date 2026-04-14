@@ -31,8 +31,33 @@ function setupNavigation() {
     }
 
     const btnExit = document.getElementById('btn-exit')
-    if (btnExit && gamePage && landingPage) {
+    const exitModalOverlay = document.getElementById('exit-modal-overlay')
+    const btnBackToGame = document.getElementById('btn-back-to-game')
+    const btnConfirmExit = document.getElementById('btn-confirm-exit')
+
+    if (btnExit && exitModalOverlay) {
         btnExit.addEventListener('click', () => {
+            exitModalOverlay.classList.add('show')
+        })
+    }
+
+    if (btnBackToGame && exitModalOverlay) {
+        btnBackToGame.addEventListener('click', () => {
+            exitModalOverlay.classList.remove('show')
+        })
+    }
+
+    if (exitModalOverlay) {
+        exitModalOverlay.addEventListener('click', (e) => {
+            if (e.target === exitModalOverlay) {
+                exitModalOverlay.classList.remove('show')
+            }
+        })
+    }
+
+    if (btnConfirmExit && exitModalOverlay && gamePage && landingPage) {
+        btnConfirmExit.addEventListener('click', () => {
+            exitModalOverlay.classList.remove('show')
             gamePage.classList.add('hidden')
             landingPage.classList.remove('hidden')
             // TODO: Reset game state
