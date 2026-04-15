@@ -1,0 +1,84 @@
+@font-face {
+    font-family: 'Red Rose';
+    src: url('/fonts/red-rose/static/RedRose-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.theme-code-vibes {
+    --font-theme: 'Red Rose', sans-serif;
+    --bg-color: #303131;
+    --text-color: #FFFFFF;
+
+    .game-page, 
+    .modal {
+        font-family: var(--font-theme);
+    }
+
+    #score-container, .score-container {
+        background-color: #4dd5bc35;
+        border: 0;
+        border-radius: 0;
+        // Player 1 (blue)
+        .score-player:nth-child(1) {
+            color: #2BB1FF;
+            
+            .score-value {
+                color: #2BB1FF !important;
+                text-shadow: 0 0 6px rgba(56, 189, 248, 0.8);
+            }
+        }
+
+        // Player 2 (orange)
+        .score-player:nth-child(2) {
+            color: #F58E39;
+            
+            .score-value {
+                color: #F58E39 !important;
+                text-shadow: 0 0 6px rgba(251, 146, 60, 0.8);
+            }
+        }
+    }
+
+    img[src*="blue"] {
+        content: url('/assets/code-vibes-figure-blue.svg');
+    }
+    
+    img[src*="orange"] {
+        content: url('/assets/code-vibes-figure-orange.svg');
+    }
+
+    #current-player-icon {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    #btn-exit { 
+        background-color: #4dd5bc35;
+        border: 1px solid #4DD5BC;
+        border-radius: 0;
+        transition: all 0.3s ease;
+        box-shadow: none;
+        
+        &:hover {
+            background-color: #47605C;
+            color: #FFFFFF;
+            box-shadow: 2px 4px 15px #47605C;
+        }
+    }
+
+    #btn-back-to-game {
+        background-color: #66CFBC;
+        border: 0;
+        border-radius: 0;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background-color: #94DED0;
+            box-shadow: inset 0 0 0 4px #3ABCA4;
+        }
+    }
+}

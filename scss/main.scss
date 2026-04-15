@@ -1,8 +1,21 @@
 @use 'abstract/variables';
+
 @use 'base/reset';
 @use 'base/typography';
+
 @use 'components/button';
-@use 'layout/landing-page';
-@use 'layout/settings';
-@use 'layout/game-page';
 @use 'components/modal';
+@use 'components/card';
+
+@use 'layout/container';
+@use 'layout/header';
+@use 'layout/footer';
+
+@use 'pages/landing-page';
+@use 'pages/settings';
+@use 'pages/game-page';
+
+@use 'themes/code-vibes';
+@use 'themes/da-project';
+@use 'themes/foods';
+@use 'themes/gaming';

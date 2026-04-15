@@ -1,0 +1,13 @@
+@use '../abstract/variables' as *;
+
+.main-footer {
+    width: 100%;
+    margin-top: auto; // Schiebt den Footer in Flex-Containern nach ganz unten
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    opacity: 0.6;
+    font-size: 0.9rem;
+}

@@ -1,5 +1,7 @@
 import '../scss/main.scss'
 
+let currentThemeClass = 'theme-code-vibes';
+
 init()
 
 function init() {
@@ -11,7 +13,6 @@ function setupNavigation() {
     const btnPlay = document.getElementById('btn-play')
     const landingPage = document.getElementById('landing-page')
     const settingsPage = document.getElementById('settings-page')
-
     const btnStart = document.getElementById('btn-start')
     const gamePage = document.getElementById('game-page')
 
@@ -329,26 +330,26 @@ function setupSettings() {
     const summaryPlayer = document.getElementById('summary-player')
     const summarySize = document.getElementById('summary-size')
 
-    const themeConfigs: Record<string, { img: string, gradient: string, label: string }> = {
-        codevibe: {
+    const themeConfigs: Record<string, { img: string, label: string, cssClass: string }> = {
+        'code-vibes': {
             img: './assets/theme-preview-pictures/codevibe-theme.png',
-            gradient: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-            label: 'Code vibes'
+            label: 'Code Vibes',
+            cssClass: 'theme-code-vibes'
         },
-        gaming: {
-            img: './assets/theme-preview-pictures/gaming-theme.png',
-            gradient: 'linear-gradient(135deg, #881337 0%, #4c0519 100%)',
-            label: 'Gaming'
-        },
-        daprojects: {
+        'da-project': {
             img: './assets/theme-preview-pictures/DAprojects-theme.png',
-            gradient: 'linear-gradient(135deg, #1e3a8a 0%, #172554 100%)',
-            label: 'DA Projects'
+            label: 'DA Project',
+            cssClass: 'theme-da-project'
         },
-        foods: {
+        'foods': {
             img: './assets/theme-preview-pictures/foods-theme.png',
-            gradient: 'linear-gradient(135deg, #14532d 0%, #052e16 100%)',
-            label: 'Foods'
+            label: 'Foods',
+            cssClass: 'theme-foods'
+        },
+        'gaming': {
+            img: './assets/theme-preview-pictures/gaming-theme.png',
+            label: 'Gaming',
+            cssClass: 'theme-gaming'
         }
     }
 
@@ -356,10 +357,12 @@ function setupSettings() {
         input.addEventListener('change', (e) => {
             const val = (e.target as HTMLInputElement).value
             const config = themeConfigs[val]
-            if (config && previewImg && previewContainer && summaryTheme) {
-                previewImg.src = config.img
-                previewContainer.style.background = config.gradient
-                summaryTheme.textContent = config.label
+
+            if (config) {
+                if (previewImg) previewImg.src = config.img
+                if (summaryTheme) summaryTheme.textContent = config.label
+
+                applyTheme(config.cssClass)
             }
         })
     })
@@ -383,7 +386,22 @@ function setupSettings() {
     })
 
     // Initial state for preview
-    if (previewContainer) {
-        previewContainer.style.background = themeConfigs['codevibe'].gradient
+    const defaultThemeKey = 'code-vibes';
+    const config = themeConfigs[defaultThemeKey];
+
+    if (config) {
+        if (previewImg) previewImg.src = config.img;
+        if (summaryTheme) summaryTheme.textContent = config.label;
+        
+        applyTheme(config.cssClass);
     }
+}
+
+function applyTheme(newClass: string) {
+    const body = document.body
+    const classesToRemove = Array.from(body.classList).filter(c => c.startsWith('theme-'))
+    body.classList.remove(...classesToRemove)
+    
+    body.classList.add(newClass)
+    currentThemeClass = newClass
 }
