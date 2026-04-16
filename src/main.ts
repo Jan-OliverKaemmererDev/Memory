@@ -87,7 +87,7 @@ let pairsFound = 0
 let totalPairs = 0
 
 function startGame() {
-    const selectedTheme = (document.querySelector('input[name="theme"]:checked') as HTMLInputElement)?.value || 'codevibe'
+    const selectedTheme = (document.querySelector('input[name="theme"]:checked') as HTMLInputElement)?.value || 'code-vibes'
     currentPlayer = (document.querySelector('input[name="player"]:checked') as HTMLInputElement)?.value || 'blue'
     const selectedSize = parseInt((document.querySelector('input[name="size"]:checked') as HTMLInputElement)?.value || '16', 10)
 
@@ -103,10 +103,10 @@ function startGame() {
 
     // Map theme to folder
     const themeFolderMap: Record<string, string> = {
-        codevibe: 'code-vibes',
-        gaming: 'games',
-        daprojects: 'da-projects',
-        foods: 'food'
+        'code-vibes': 'code-vibes',
+        'gaming': 'games',
+        'da-project': 'da-projects',
+        'foods': 'food'
     }
     const folder = themeFolderMap[selectedTheme]
     const backImageUrl = `${import.meta.env.BASE_URL}assets/theme-card-pictures/${folder}/back.svg`
@@ -332,22 +332,22 @@ function setupSettings() {
 
     const themeConfigs: Record<string, { img: string, label: string, cssClass: string }> = {
         'code-vibes': {
-            img: './assets/theme-preview-pictures/codevibe-theme.png',
+            img: `${import.meta.env.BASE_URL}assets/theme-preview-pictures/codevibe-theme.png`,
             label: 'Code Vibes',
             cssClass: 'theme-code-vibes'
         },
         'da-project': {
-            img: './assets/theme-preview-pictures/DAprojects-theme.png',
+            img: `${import.meta.env.BASE_URL}assets/theme-preview-pictures/DAprojects-theme.png`,
             label: 'DA Project',
             cssClass: 'theme-da-project'
         },
         'foods': {
-            img: './assets/theme-preview-pictures/foods-theme.png',
+            img: `${import.meta.env.BASE_URL}assets/theme-preview-pictures/foods-theme.png`,
             label: 'Foods',
             cssClass: 'theme-foods'
         },
         'gaming': {
-            img: './assets/theme-preview-pictures/gaming-theme.png',
+            img: `${import.meta.env.BASE_URL}assets/theme-preview-pictures/gaming-theme.png`,
             label: 'Gaming',
             cssClass: 'theme-gaming'
         }
@@ -385,15 +385,27 @@ function setupSettings() {
         })
     })
 
-    // Initial state for preview
-    const defaultThemeKey = 'code-vibes';
-    const config = themeConfigs[defaultThemeKey];
+    // Initial state for preview and summary
+    const checkedTheme = document.querySelector('input[name="theme"]:checked') as HTMLInputElement
+    const checkedPlayer = document.querySelector('input[name="player"]:checked') as HTMLInputElement
+    const checkedSize = document.querySelector('input[name="size"]:checked') as HTMLInputElement
 
-    if (config) {
-        if (previewImg) previewImg.src = config.img;
-        if (summaryTheme) summaryTheme.textContent = config.label;
-        
-        applyTheme(config.cssClass);
+    if (checkedTheme) {
+        const config = themeConfigs[checkedTheme.value]
+        if (config) {
+            if (previewImg) previewImg.src = config.img
+            if (summaryTheme) summaryTheme.textContent = config.label
+            applyTheme(config.cssClass)
+        }
+    }
+
+    if (checkedPlayer && summaryPlayer) {
+        const val = checkedPlayer.value
+        summaryPlayer.textContent = `Player ${val.charAt(0).toUpperCase() + val.slice(1)}`
+    }
+
+    if (checkedSize && summarySize) {
+        summarySize.textContent = `${checkedSize.value} cards`
     }
 }
 

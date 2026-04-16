@@ -1,0 +1,58 @@
+.theme-gaming {
+    --font-theme: 'Orbitron', sans-serif; // Assumes font is available or fallbacks
+    --bg-color: #0f172a;
+    --text-color: #f8fafc;
+
+    .game-page, 
+    .modal {
+        font-family: var(--font-theme);
+    }
+
+    #score-container, .score-container {
+        background-color: rgba(139, 92, 246, 0.2); // Purple tint
+        border: 1px solid rgba(139, 92, 246, 0.4);
+        border-radius: 12px;
+
+        .score-player:nth-child(1) {
+            color: #22d3ee; // Cyan
+            
+            .score-value {
+                color: #22d3ee !important;
+                text-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
+            }
+        }
+
+        .score-player:nth-child(2) {
+            color: #f472b6; // Pink
+            
+            .score-value {
+                color: #f472b6 !important;
+                text-shadow: 0 0 10px rgba(244, 114, 182, 0.6);
+            }
+        }
+    }
+
+    #btn-exit { 
+        background-color: #1e293b;
+        border: 2px solid #8b5cf6;
+        border-radius: 8px;
+        color: #f8fafc;
+        
+        &:hover {
+            background-color: #8b5cf6;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+    }
+
+    #btn-back-to-game {
+        background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        
+        &:hover {
+            filter: brightness(1.2);
+            box-shadow: 0 0 25px rgba(217, 70, 239, 0.5);
+        }
+    }
+}

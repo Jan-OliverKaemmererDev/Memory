@@ -1,0 +1,56 @@
+.theme-foods {
+    --font-theme: 'Quicksand', sans-serif;
+    --bg-color: #2d241e;
+    --text-color: #ffedd5;
+
+    .game-page, 
+    .modal {
+        font-family: var(--font-theme);
+    }
+
+    #score-container, .score-container {
+        background-color: rgba(251, 146, 60, 0.15);
+        border: 2px dashed rgba(251, 146, 60, 0.3);
+        border-radius: 20px;
+
+        .score-player:nth-child(1) {
+            color: #60a5fa;
+            
+            .score-value {
+                color: #60a5fa !important;
+            }
+        }
+
+        .score-player:nth-child(2) {
+            color: #fb923c;
+            
+            .score-value {
+                color: #fb923c !important;
+            }
+        }
+    }
+
+    #btn-exit { 
+        background-color: #3f2f25;
+        border: none;
+        border-radius: 50px;
+        color: #ffedd5;
+        
+        &:hover {
+            transform: translateY(-2px);
+            background-color: #4d3a2e;
+        }
+    }
+
+    #btn-back-to-game {
+        background-color: #fb923c;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        
+        &:hover {
+            background-color: #f97316;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+        }
+    }
+}

@@ -1,0 +1,56 @@
+.theme-da-project {
+    --font-theme: 'Montserrat', sans-serif;
+    --bg-color: #1a1a1a;
+    --text-color: #ECE664;
+
+    .game-page, 
+    .modal {
+        font-family: var(--font-theme);
+    }
+
+    #score-container, .score-container {
+        background-color: rgba(236, 230, 100, 0.1);
+        border: 1px solid rgba(236, 230, 100, 0.3);
+        border-radius: 4px;
+
+        .score-player:nth-child(1) {
+            color: #38bdf8;
+            
+            .score-value {
+                color: #38bdf8 !important;
+            }
+        }
+
+        .score-player:nth-child(2) {
+            color: #fb923c;
+            
+            .score-value {
+                color: #fb923c !important;
+            }
+        }
+    }
+
+    #btn-exit { 
+        background-color: transparent;
+        border: 1px solid #ECE664;
+        border-radius: 4px;
+        color: #ECE664;
+        
+        &:hover {
+            background-color: #ECE664;
+            color: #1a1a1a;
+        }
+    }
+
+    #btn-back-to-game {
+        background-color: #ECE664;
+        color: #1a1a1a;
+        border: none;
+        border-radius: 4px;
+        font-weight: 700;
+        
+        &:hover {
+            background-color: #f3ef9d;
+        }
+    }
+}
