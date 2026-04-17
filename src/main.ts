@@ -2,81 +2,88 @@ import '../scss/main.scss'
 
 let currentThemeClass = 'theme-code-vibes';
 
-init()
+init();
 
 function init() {
-    setupNavigation()
-    setupSettings()
+    setupNavigation();
+    setupSettings();
 }
 
 function setupNavigation() {
-    const btnPlay = document.getElementById('btn-play')
-    const landingPage = document.getElementById('landing-page')
-    const settingsPage = document.getElementById('settings-page')
-    const btnStart = document.getElementById('btn-start')
-    const gamePage = document.getElementById('game-page')
-
-    if (btnPlay && landingPage && settingsPage) {
-        btnPlay.addEventListener('click', () => {
-            landingPage.classList.add('hidden')
-            settingsPage.classList.remove('hidden')
-        })
-    }
-
-    if (btnStart && settingsPage && gamePage) {
-        btnStart.addEventListener('click', () => {
-            settingsPage.classList.add('hidden')
-            gamePage.classList.remove('hidden')
-            startGame()
-        })
-    }
-
-    const btnExit = document.getElementById('btn-exit')
-    const exitModalOverlay = document.getElementById('exit-modal-overlay')
-    const btnBackToGame = document.getElementById('btn-back-to-game')
-    const btnConfirmExit = document.getElementById('btn-confirm-exit')
-
-    if (btnExit && exitModalOverlay) {
-        btnExit.addEventListener('click', () => {
-            exitModalOverlay.classList.add('show')
-        })
-    }
-
-    if (btnBackToGame && exitModalOverlay) {
-        btnBackToGame.addEventListener('click', () => {
-            exitModalOverlay.classList.remove('show')
-        })
-    }
-
-    if (exitModalOverlay) {
-        exitModalOverlay.addEventListener('click', (e) => {
-            if (e.target === exitModalOverlay) {
-                exitModalOverlay.classList.remove('show')
-            }
-        })
-    }
-
-    if (btnConfirmExit && exitModalOverlay && gamePage && landingPage) {
-        btnConfirmExit.addEventListener('click', () => {
-            exitModalOverlay.classList.remove('show')
-            gamePage.classList.add('hidden')
-            landingPage.classList.remove('hidden')
-            applyTheme('theme-code-vibes') // Reset to default theme
-        })
-    }
-
-    const btnBackToStart = document.getElementById('btn-back-to-start')
-    const winnerModalOverlay = document.getElementById('winner-modal-overlay')
-    const gameOverModalOverlay = document.getElementById('game-over-modal-overlay')
-    if (btnBackToStart && winnerModalOverlay && landingPage && gamePage) {
-        btnBackToStart.addEventListener('click', () => {
-            winnerModalOverlay.classList.remove('show')
-            gamePage.classList.add('hidden')
-            landingPage.classList.remove('hidden')
-            applyTheme('theme-code-vibes') // Reset to default theme
-        })
-    }
+    setupPageTransitions();
+    setupExitModal();
+    setupWinnerModal();
 }
+
+function setupPageTransitions() {
+    setupBtnPlay();
+    setupBtnStart();
+}
+
+function setupBtnPlay() {
+    const btnPlay = document.getElementById('btn-play');
+    const landing = document.getElementById('landing-page');
+    const settings = document.getElementById('settings-page');
+    btnPlay?.addEventListener('click', () => {
+        landing?.classList.add('hidden');
+        settings?.classList.remove('hidden');
+    });
+}
+
+function setupBtnStart() {
+    const btnStart = document.getElementById('btn-start');
+    const settings = document.getElementById('settings-page');
+    const game = document.getElementById('game-page');
+    btnStart?.addEventListener('click', () => {
+        settings?.classList.add('hidden');
+        game?.classList.remove('hidden');
+        startGame();
+    });
+}
+
+
+function setupExitModal() {
+    setupExitButtonHandlers();
+    setupConfirmExitHandler();
+}
+
+function setupExitButtonHandlers() {
+    const btnExit = document.getElementById('btn-exit');
+    const overlay = document.getElementById('exit-modal-overlay');
+    const btnBack = document.getElementById('btn-back-to-game');
+    btnExit?.addEventListener('click', () => overlay?.classList.add('show'));
+    btnBack?.addEventListener('click', () => overlay?.classList.remove('show'));
+    overlay?.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('show');
+    });
+}
+
+function setupConfirmExitHandler() {
+    const btnConfirm = document.getElementById('btn-confirm-exit');
+    const overlay = document.getElementById('exit-modal-overlay');
+    btnConfirm?.addEventListener('click', () => {
+        overlay?.classList.remove('show');
+        document.getElementById('game-page')?.classList.add('hidden');
+        document.getElementById('landing-page')?.classList.remove('hidden');
+        applyTheme('theme-code-vibes');
+    });
+}
+
+
+function setupWinnerModal() {
+    const btnBackToStart = document.getElementById('btn-back-to-start');
+    const winnerModal = document.getElementById('winner-modal-overlay');
+    const landingPage = document.getElementById('landing-page');
+    const gamePage = document.getElementById('game-page');
+
+    btnBackToStart?.addEventListener('click', () => {
+        winnerModal?.classList.remove('show');
+        gamePage?.classList.add('hidden');
+        landingPage?.classList.remove('hidden');
+        applyTheme('theme-code-vibes');
+    });
+}
+
 
 let hasFlippedCard = false
 let lockBoard = false
@@ -89,11 +96,22 @@ let pairsFound = 0
 let totalPairs = 0
 
 function startGame() {
-    const selectedTheme = (document.querySelector('input[name="theme"]:checked') as HTMLInputElement)?.value || 'code-vibes'
-    currentPlayer = (document.querySelector('input[name="player"]:checked') as HTMLInputElement)?.value || 'blue'
-    const selectedSize = parseInt((document.querySelector('input[name="size"]:checked') as HTMLInputElement)?.value || '16', 10)
+    const theme = (document.querySelector('input[name="theme"]:checked') as HTMLInputElement)?.value || 'code-vibes'
+    const size = parseInt((document.querySelector('input[name="size"]:checked') as HTMLInputElement)?.value || '16', 10)
+    initializeGameState(size)
+    const folder = getThemeAssets(theme)
+    updateScoreUI()
+    updateTurnUI()
+    const board = document.getElementById('game-board')
+    if (board) {
+        setupGameBoard(board, size)
+        generateAndDisplayCards(board, size, folder)
+    }
+}
 
-    // Setup state
+
+function initializeGameState(selectedSize: number) {
+    currentPlayer = (document.querySelector('input[name="player"]:checked') as HTMLInputElement)?.value || 'blue'
     scoreBlue = 0
     scoreOrange = 0
     pairsFound = 0
@@ -102,75 +120,67 @@ function startGame() {
     lockBoard = false
     firstCard = null
     secondCard = null
+}
 
-    // Map theme to folder
+function getThemeAssets(selectedTheme: string) {
     const themeFolderMap: Record<string, string> = {
-        'code-vibes': 'code-vibes',
-        'gaming': 'games',
-        'da-project': 'da-projects',
-        'foods': 'food'
+        'code-vibes': 'code-vibes', 'gaming': 'games',
+        'da-project': 'da-projects', 'foods': 'food'
     }
-    const folder = themeFolderMap[selectedTheme]
-    const backImageUrl = `${import.meta.env.BASE_URL}assets/theme-card-pictures/${folder}/back.svg`
+    return themeFolderMap[selectedTheme]
+}
 
-    updateScoreUI()
-    updateTurnUI()
+function setupGameBoard(board: HTMLElement, selectedSize: number) {
+    board.innerHTML = ''
+    let cols = 4
+    if (selectedSize === 24 || selectedSize === 36) cols = 6
+    board.style.setProperty('--cols', cols.toString())
+}
 
-    const board = document.getElementById('game-board')
-    if (board) {
-        board.innerHTML = ''
-        
-        let cols = 4
-        if (selectedSize === 24) cols = 6
-        if (selectedSize === 36) cols = 6
-        board.style.setProperty('--cols', cols.toString())
+function generateAndDisplayCards(board: HTMLElement, size: number, folder: string) {
+    const arr = []
+    for (let i = 1; i <= totalPairs; i++) {
+        arr.push(i, i)
+    }
+    arr.sort(() => Math.random() - 0.5)
 
-        // Generate deck
-        const arr = []
-        for (let i = 1; i <= totalPairs; i++) {
-            arr.push(i)
-            arr.push(i)
-        }
-        
-        // Shuffle
-        arr.sort(() => Math.random() - 0.5)
-
-        for (let i = 0; i < selectedSize; i++) {
-            const cardId = arr[i]
-            const card = document.createElement('div')
-            card.className = 'memory-card'
-            card.dataset.id = cardId.toString()
-
-            const frontImageUrl = `${import.meta.env.BASE_URL}assets/theme-card-pictures/${folder}/front-${cardId}.svg`
-
-            card.innerHTML = `
-                <div class="card-inner">
-                    <div class="card-front"><img src="${frontImageUrl}" alt="Front"></div>
-                    <div class="card-back"><img src="${backImageUrl}" alt="Back"></div>
-                </div>
-            `
-            
-            card.addEventListener('click', flipCard)
-            board.appendChild(card)
-        }
+    for (let i = 0; i < size; i++) {
+        createCardElement(board, arr[i], folder)
     }
 }
 
+function createCardElement(board: HTMLElement, cardId: number, folder: string) {
+    const card = document.createElement('div')
+    card.className = 'memory-card'
+    card.dataset.id = cardId.toString()
+    const base = `${import.meta.env.BASE_URL}assets/theme-card-pictures/${folder}/`
+    card.innerHTML = getCardInnerHTML(`${base}front-${cardId}.svg`, `${base}back.svg`)
+    card.addEventListener('click', flipCard)
+    board.appendChild(card)
+}
+
+function getCardInnerHTML(frontUrl: string, backUrl: string) {
+    return `
+        <div class="card-inner">
+            <div class="card-front"><img src="${frontUrl}" alt="Front"></div>
+            <div class="card-back"><img src="${backUrl}" alt="Back"></div>
+        </div>`
+}
+
+
+
 function flipCard(this: HTMLElement) {
-    if (lockBoard) return
-    if (this === firstCard) return
-
+    if (lockBoard || this === firstCard) return
     this.classList.add('flipped')
-
     if (!hasFlippedCard) {
         hasFlippedCard = true
         firstCard = this
-        return
+    } else {
+        secondCard = this
+        checkForMatch()
     }
-
-    secondCard = this
-    checkForMatch()
 }
+
 
 function checkForMatch() {
     let isMatch = firstCard?.dataset.id === secondCard?.dataset.id
@@ -185,76 +195,68 @@ function checkForMatch() {
 function disableCards() {
     firstCard?.removeEventListener('click', flipCard)
     secondCard?.removeEventListener('click', flipCard)
-
-    // Add points to current player
-    if (currentPlayer === 'blue') {
-        scoreBlue++
-    } else {
-        scoreOrange++
-    }
-
+    updateScoreAfterMatch()
     pairsFound++
     updateScoreUI()
-
     resetBoard()
-
     if (pairsFound === totalPairs) {
         setTimeout(handleGameFinished, 500)
     }
 }
 
-function handleGameFinished() {
-    const gameOverModal = document.getElementById('game-over-modal-overlay')
-    const winnerModal = document.getElementById('winner-modal-overlay')
-    
-    // Update Final Scores
-    const finalScoreBlue = document.getElementById('final-score-blue')
-    const finalScoreOrange = document.getElementById('final-score-orange')
-    if (finalScoreBlue) finalScoreBlue.textContent = scoreBlue.toString()
-    if (finalScoreOrange) finalScoreOrange.textContent = scoreOrange.toString()
-
-    // Show Game Over
-    if (gameOverModal) {
-        gameOverModal.classList.add('show')
+function updateScoreAfterMatch() {
+    if (currentPlayer === 'blue') {
+        scoreBlue++
+    } else {
+        scoreOrange++
     }
-
-    // After 2s show Winner Screen
-    setTimeout(() => {
-        if (gameOverModal) gameOverModal.classList.remove('show')
-        
-        let winnerNameText = "It's a tie!"
-        let winnerColor = 'white'
-        
-        if (scoreBlue > scoreOrange) {
-            winnerNameText = 'BLUE PLAYER'
-            winnerColor = 'blue'
-        } else if (scoreOrange > scoreBlue) {
-            winnerNameText = 'ORANGE PLAYER'
-            winnerColor = 'orange'
-        }
-
-        const winnerNameEl = document.getElementById('winner-name')
-        const winnerIconEl = document.getElementById('winner-icon') as HTMLImageElement
-
-        if (winnerNameEl) {
-            winnerNameEl.textContent = winnerNameText
-            winnerNameEl.style.color = winnerColor === 'blue' ? '#38bdf8' : (winnerColor === 'orange' ? '#fb923c' : 'white')
-        }
-        
-        if (winnerIconEl && winnerColor !== 'white') {
-            winnerIconEl.src = `${import.meta.env.BASE_URL}assets/chess-piece-${winnerColor}.svg`
-            winnerIconEl.style.display = 'block'
-        } else if (winnerIconEl) {
-            winnerIconEl.style.display = 'none'
-        }
-
-        createConfetti()
-
-        if (winnerModal) {
-            winnerModal.classList.add('show')
-        }
-    }, 2000)
 }
+
+
+function handleGameFinished() {
+    updateFinalScores();
+    const gameOverModal = document.getElementById('game-over-modal-overlay');
+    if (gameOverModal) gameOverModal.classList.add('show');
+
+    setTimeout(() => {
+        if (gameOverModal) gameOverModal.classList.remove('show');
+        showWinnerScreen();
+    }, 2000);
+}
+
+function updateFinalScores() {
+    const fBlue = document.getElementById('final-score-blue');
+    const fOrange = document.getElementById('final-score-orange');
+    if (fBlue) fBlue.textContent = scoreBlue.toString();
+    if (fOrange) fOrange.textContent = scoreOrange.toString();
+}
+
+function showWinnerScreen() {
+    const { name, color } = getWinnerDetails();
+    updateWinnerUI(name, color);
+    createConfetti();
+    document.getElementById('winner-modal-overlay')?.classList.add('show');
+}
+
+function getWinnerDetails() {
+    if (scoreBlue > scoreOrange) return { name: 'BLUE PLAYER', color: 'blue' };
+    if (scoreOrange > scoreBlue) return { name: 'ORANGE PLAYER', color: 'orange' };
+    return { name: "It's a tie!", color: 'white' };
+}
+
+function updateWinnerUI(name: string, color: string) {
+    const nameEl = document.getElementById('winner-name');
+    const iconEl = document.getElementById('winner-icon') as HTMLImageElement;
+    if (nameEl) {
+        nameEl.textContent = name;
+        nameEl.style.color = color === 'blue' ? '#38bdf8' : (color === 'orange' ? '#fb923c' : 'white');
+    }
+    if (iconEl) {
+        iconEl.src = `${import.meta.env.BASE_URL}assets/chess-piece-${color}.svg`;
+        iconEl.style.display = color === 'white' ? 'none' : 'block';
+    }
+}
+
 
 function createConfetti() {
     const container = document.getElementById('confetti-container');
@@ -262,18 +264,23 @@ function createConfetti() {
     container.innerHTML = '';
     const colors = ['#38bdf8', '#fb923c', '#63CDBB', '#EEFBF8'];
     for (let i = 0; i < 60; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti-piece';
-        confetti.style.left = Math.random() * 100 + '%';
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.animationDelay = Math.random() * 3 + 's';
-        if (Math.random() > 0.5) {
-             confetti.style.width = '8px';
-             confetti.style.height = '16px';
-        }
-        container.appendChild(confetti);
+        createConfettiPiece(container, colors);
     }
 }
+
+function createConfettiPiece(container: HTMLElement, colors: string[]) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti-piece';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 3 + 's';
+    if (Math.random() > 0.5) {
+        confetti.style.width = '8px';
+        confetti.style.height = '16px';
+    }
+    container.appendChild(confetti);
+}
+
 
 function unflipCards() {
     lockBoard = true
@@ -298,18 +305,24 @@ function resetBoard() {
 }
 
 function updateScoreUI() {
-    const scoreContainer = document.getElementById('score-container')
-    if (scoreContainer) {
-        scoreContainer.innerHTML = `
-            <div class="score-player ${currentPlayer === 'blue' ? 'active' : ''}" style="color: #38bdf8;">
-                <span class="icon"><img src="${import.meta.env.BASE_URL}assets/chess-piece-blue.svg" alt="Blue" width="24" height="24"></span> Blue <span class="score-value" style="color: white; margin-left:8px;">${scoreBlue}</span>
-            </div>
-            <div class="score-player ${currentPlayer === 'orange' ? 'active' : ''}" style="color: #fb923c;">
-                <span class="icon"><img src="${import.meta.env.BASE_URL}assets/chess-piece-orange.svg" alt="Orange" width="24" height="24"></span> Orange <span class="score-value" style="color: white; margin-left:8px;">${scoreOrange}</span>
-            </div>
-        `
+    const container = document.getElementById('score-container')
+    if (container) {
+        container.innerHTML = getScoreInnerHTML()
     }
 }
+
+function getScoreInnerHTML() {
+    const active = 'active';
+    const baseUrl = import.meta.env.BASE_URL;
+    return `
+        <div class="score-player ${currentPlayer === 'blue' ? active : ''}" style="color: #38bdf8;">
+            <span class="icon"><img src="${baseUrl}assets/chess-piece-blue.svg" alt="Blue" width="24" height="24"></span> Blue <span class="score-value" style="color: white; margin-left:8px;">${scoreBlue}</span>
+        </div>
+        <div class="score-player ${currentPlayer === 'orange' ? active : ''}" style="color: #fb923c;">
+            <span class="icon"><img src="${baseUrl}assets/chess-piece-orange.svg" alt="Orange" width="24" height="24"></span> Orange <span class="score-value" style="color: white; margin-left:8px;">${scoreOrange}</span>
+        </div>`;
+}
+
 
 function updateTurnUI() {
     const currentPlayerIcon = document.getElementById('current-player-icon')
@@ -321,95 +334,89 @@ function updateTurnUI() {
 }
 
 function setupSettings() {
-    const themeInputs = document.querySelectorAll('input[name="theme"]')
-    const playerInputs = document.querySelectorAll('input[name="player"]')
-    const sizeInputs = document.querySelectorAll('input[name="size"]')
-    
-    const previewContainer = document.getElementById('theme-preview')
-    const previewImg = previewContainer?.querySelector('img')
-    
-    const summaryTheme = document.getElementById('summary-theme')
-    const summaryPlayer = document.getElementById('summary-player')
-    const summarySize = document.getElementById('summary-size')
+    const themeConfigs: Record<string, any> = getThemeConfigs();
+    setupThemeListeners(themeConfigs);
+    setupPlayerAndSizeListeners();
+    initializeSettingsUI(themeConfigs);
+}
 
-    const themeConfigs: Record<string, { img: string, label: string, cssClass: string }> = {
-        'code-vibes': {
-            img: `${import.meta.env.BASE_URL}assets/theme-preview-pictures/codevibe-theme.png`,
-            label: 'Code Vibes',
-            cssClass: 'theme-code-vibes'
-        },
-        'da-project': {
-            img: `${import.meta.env.BASE_URL}assets/theme-preview-pictures/DAprojects-theme.png`,
-            label: 'DA Project',
-            cssClass: 'theme-da-project'
-        },
-        'foods': {
-            img: `${import.meta.env.BASE_URL}assets/theme-preview-pictures/foods-theme.png`,
-            label: 'Foods',
-            cssClass: 'theme-foods'
-        },
-        'gaming': {
-            img: `${import.meta.env.BASE_URL}assets/theme-preview-pictures/gaming-theme.png`,
-            label: 'Gaming',
-            cssClass: 'theme-gaming'
-        }
-    }
+function getThemeConfigs() {
+    const base = import.meta.env.BASE_URL + 'assets/theme-preview-pictures/';
+    return {
+        'code-vibes': { img: base + 'codevibe-theme.png', label: 'Code Vibes', cssClass: 'theme-code-vibes' },
+        'da-project': { img: base + 'DAprojects-theme.png', label: 'DA Project', cssClass: 'theme-da-project' },
+        'foods': { img: base + 'foods-theme.png', label: 'Foods', cssClass: 'theme-foods' },
+        'gaming': { img: base + 'gaming-theme.png', label: 'Gaming', cssClass: 'theme-gaming' }
+    };
+}
 
-    themeInputs.forEach(input => {
+function setupThemeListeners(configs: Record<string, any>) {
+    document.querySelectorAll('input[name="theme"]').forEach(input => {
         input.addEventListener('change', (e) => {
-            const val = (e.target as HTMLInputElement).value
-            const config = themeConfigs[val]
-
+            const config = configs[(e.target as HTMLInputElement).value];
             if (config) {
-                if (previewImg) previewImg.src = config.img
-                if (summaryTheme) summaryTheme.textContent = config.label
-
-                applyTheme(config.cssClass)
+                const previewImg = document.querySelector('#theme-preview img') as HTMLImageElement;
+                const summaryTheme = document.getElementById('summary-theme');
+                if (previewImg) previewImg.src = config.img;
+                if (summaryTheme) summaryTheme.textContent = config.label;
+                applyTheme(config.cssClass);
             }
-        })
-    })
+        });
+    });
+}
 
-    playerInputs.forEach(input => {
+function setupPlayerAndSizeListeners() {
+    setupPlayerListeners();
+    setupSizeListeners();
+}
+
+function setupPlayerListeners() {
+    document.querySelectorAll('input[name="player"]').forEach(input => {
         input.addEventListener('change', (e) => {
-            const val = (e.target as HTMLInputElement).value
-            if (summaryPlayer) {
-                summaryPlayer.textContent = `Player ${val.charAt(0).toUpperCase() + val.slice(1)}`
-            }
-        })
-    })
+            const val = (e.target as HTMLInputElement).value;
+            const el = document.getElementById('summary-player');
+            if (el) el.textContent = `Player ${val.charAt(0).toUpperCase() + val.slice(1)}`;
+        });
+    });
+}
 
-    sizeInputs.forEach(input => {
+function setupSizeListeners() {
+    document.querySelectorAll('input[name="size"]').forEach(input => {
         input.addEventListener('change', (e) => {
-            const val = (e.target as HTMLInputElement).value
-            if (summarySize) {
-                summarySize.textContent = `${val} cards`
-            }
-        })
-    })
+            const el = document.getElementById('summary-size');
+            if (el) el.textContent = `${(e.target as HTMLInputElement).value} cards`;
+        });
+    });
+}
 
-    // Initial state for preview and summary
-    const checkedTheme = document.querySelector('input[name="theme"]:checked') as HTMLInputElement
-    const checkedPlayer = document.querySelector('input[name="player"]:checked') as HTMLInputElement
-    const checkedSize = document.querySelector('input[name="size"]:checked') as HTMLInputElement
 
-    if (checkedTheme) {
-        const config = themeConfigs[checkedTheme.value]
-        if (config) {
-            if (previewImg) previewImg.src = config.img
-            if (summaryTheme) summaryTheme.textContent = config.label
-            applyTheme(config.cssClass)
-        }
-    }
+function initializeSettingsUI(configs: Record<string, any>) {
+    initThemeSettings(configs);
+    initPlayerAndSizeSettings();
+}
 
-    if (checkedPlayer && summaryPlayer) {
-        const val = checkedPlayer.value
-        summaryPlayer.textContent = `Player ${val.charAt(0).toUpperCase() + val.slice(1)}`
-    }
-
-    if (checkedSize && summarySize) {
-        summarySize.textContent = `${checkedSize.value} cards`
+function initThemeSettings(configs: Record<string, any>) {
+    const theme = document.querySelector('input[name="theme"]:checked') as HTMLInputElement;
+    if (theme && configs[theme.value]) {
+        const config = configs[theme.value];
+        const previewImg = document.querySelector('#theme-preview img') as HTMLImageElement;
+        const summaryTheme = document.getElementById('summary-theme');
+        if (previewImg) previewImg.src = config.img;
+        if (summaryTheme) summaryTheme.textContent = config.label;
+        applyTheme(config.cssClass);
     }
 }
+
+function initPlayerAndSizeSettings() {
+    const player = document.querySelector('input[name="player"]:checked') as HTMLInputElement;
+    const size = document.querySelector('input[name="size"]:checked') as HTMLInputElement;
+    const sPlayer = document.getElementById('summary-player');
+    if (player && sPlayer) sPlayer.textContent = `Player ${player.value.charAt(0).toUpperCase() + player.value.slice(1)}`;
+    const sSize = document.getElementById('summary-size');
+    if (size && sSize) sSize.textContent = `${size.value} cards`;
+}
+
+
 
 function applyTheme(newClass: string) {
     const body = document.body
