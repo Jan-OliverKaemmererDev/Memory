@@ -1,58 +1,151 @@
+@font-face {
+    font-family: 'Orbitron';
+    src: url('/fonts/orbitron/static/Orbitron-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .theme-gaming {
-    --font-theme: 'Orbitron', sans-serif; // Assumes font is available or fallbacks
-    --bg-color: #0f172a;
-    --text-color: #f8fafc;
+    --font-theme: 'Orbitron', sans-serif;
+    --bg-color: #294F60;
+    --text-color: #FFFFFF;
 
     .game-page, 
     .modal {
         font-family: var(--font-theme);
     }
 
+    .main-header {
+        background-color: #545D75;
+        height: 96px;
+        border-radius: 8px;
+    }
+
+    .game-page {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
     #score-container, .score-container {
-        background-color: rgba(139, 92, 246, 0.2); // Purple tint
-        border: 1px solid rgba(139, 92, 246, 0.4);
+        background-color: #FFFFFF;
+        border: none;
         border-radius: 12px;
 
-        .score-player:nth-child(1) {
-            color: #22d3ee; // Cyan
-            
-            .score-value {
-                color: #22d3ee !important;
-                text-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
-            }
+        img[src*="blue"] {
+            content: url('/assets/chess-piece-blue.svg');
+        }
+    
+        img[src*="orange"] {
+            content: url('/assets/chess-piece-orange.svg');
         }
 
-        .score-player:nth-child(2) {
-            color: #f472b6; // Pink
+
+
+        .score-player {
+            font-size: 0;
+            gap: 0;
             
-            .score-value {
-                color: #f472b6 !important;
-                text-shadow: 0 0 10px rgba(244, 114, 182, 0.6);
+            .icon, .score-value {
+                font-size: 1.2rem;
+            }
+
+            &:nth-child(1) {
+                color: #1887C9;
+                
+                .score-value {
+                    color: #1887C9 !important;
+                }
+            }
+
+            &:nth-child(2) {
+                color: #EA6900;
+                
+                .score-value {
+                    color: #EA6900 !important;
+                }
             }
         }
+    }
+
+    #current-player-icon {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        box-shadow: none;
+        padding: 0;
     }
 
     #btn-exit { 
-        background-color: #1e293b;
-        border: 2px solid #8b5cf6;
+        background-color: #394B61;
+        border: 2px solid #ED1B76;
         border-radius: 8px;
-        color: #f8fafc;
+        color: var(--text-color);
+        font-family: var(--font-theme);
         
         &:hover {
-            background-color: #8b5cf6;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+            background-color: #444862;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+
+            img {
+                filter: invert(24%) sepia(90%) saturate(5425%) hue-rotate(337deg) brightness(89%) contrast(94%) drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.6));
+            }
         }
     }
 
+    .modal {
+        font-family: var(--font-theme);
+        border-radius: 16px;
+    }
+
     #btn-back-to-game {
-        background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
+        font-family: var(--font-theme);
+        background-color: #ED1B76;
         border: none;
         border-radius: 8px;
         color: white;
         
         &:hover {
-            filter: brightness(1.2);
-            box-shadow: 0 0 25px rgba(217, 70, 239, 0.5);
+            color: #ED1B76;
+            background-color: #FFFFFF;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4), inset 0 0 0 2px #ED1B76;
+        }
+    }
+
+    #btn-confirm-exit {
+        font-family: var(--font-theme);
+        color: #ED1B76;
+        border-radius: 8px;
+        border: 2px solid #ED1B76;
+        background-color: #F0E5EE;
+
+        &:hover {
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4), inset 0 0 0 1px #ED1B76;
+            background-color: #EFD7E6;
+        }
+    }
+
+    .game-board {
+        gap: 0;
+    }
+
+    .memory-card {
+        .card-inner {
+            box-shadow: none;
+            background: transparent;
+        }
+
+        .card-front, .card-back {
+            background: transparent;
+            box-shadow: none;
+            
+            img {
+                object-fit: contain;
+            }
+        }
+        
+        &:hover:not(.flipped) .card-inner {
+            box-shadow: none;
+            transform: scale(1.1);
         }
     }
 }
