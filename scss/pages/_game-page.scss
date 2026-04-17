@@ -12,7 +12,7 @@
     background-color: $bg-color;
     padding: clamp(1rem, 3vh, 2rem);
     z-index: 100;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .score-container {
@@ -89,28 +89,29 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    min-height: 0;
+    overflow: hidden;
 }
 
 .game-board {
     display: grid;
-    gap: clamp(0.5rem, 2vw, 1.5rem);
-    width: 100%;
+    gap: clamp(0.3rem, 1vmin, 1rem);
+    width: min(100%, calc(70vh * (var(--cols, 4) / var(--rows, 4))));
     max-width: 800px;
+    max-height: 100%;
+    aspect-ratio: var(--cols, 4) / var(--rows, 4);
     margin: 0 auto;
     
-    /* Dynamically computed columns based on number of cards.
-       A small JS snippet can set --cols based on cards, e.g., style="--cols: 4".
-       For 16 cards -> 4x4.
-       For 24 cards -> 6x4 or 4x6.
-       For 36 cards -> 6x6.
-    */
     grid-template-columns: repeat(var(--cols, 4), 1fr);
+    grid-template-rows: repeat(var(--rows, 4), 1fr);
 
     .memory-card {
         aspect-ratio: 1;
+        min-width: 0;
+        min-height: 0;
         cursor: pointer;
         perspective: 1000px;
-        position: relative; // Removed box shadow / hover logic direct on card
+        position: relative;
 
         .card-inner {
             width: 100%;
@@ -144,7 +145,7 @@
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                pointer-events: none; // Prevent image dragging
+                pointer-events: none;
             }
         }
 
