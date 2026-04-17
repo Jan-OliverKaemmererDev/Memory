@@ -10,9 +10,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: $bg-color;
-    padding: clamp(1rem, 3vh, 2rem);
+    padding: clamp(2rem, 10vh, 5rem) clamp(1rem, 5vw, 2rem);
     z-index: 100;
     overflow-y: auto;
 }

@@ -1,56 +1,145 @@
+@font-face {
+    font-family: 'KleeOne';
+    src: url('/fonts/klee-one/KleeOne-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .theme-foods {
-    --font-theme: 'Quicksand', sans-serif;
-    --bg-color: #2d241e;
-    --text-color: #ffedd5;
+    --font-theme: 'KleeOne', sans-serif;
+    --bg-color: #FFFFFF;
+    --text-color: #A45212;
 
     .game-page, 
     .modal {
         font-family: var(--font-theme);
     }
 
+    .game-page {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
+    .main-header {
+        background-color: #F0E5D9;
+        height: 96px;
+        border-radius: 8px;
+    }
+
     #score-container, .score-container {
-        background-color: rgba(251, 146, 60, 0.15);
-        border: 2px dashed rgba(251, 146, 60, 0.3);
-        border-radius: 20px;
+        font-family: var(--font-theme);
+        background-color: #FFFFFF;
+        border-radius: 8px;
+
+        .score-player {
+            font-size: 0;
+            gap: 0;
+            
+            .icon, .score-value {
+                font-size: 1.2rem;
+            }
+
+            &:nth-child(1) {
+                color: #1887C9;
+                
+                .score-value {
+                    color: #1887C9 !important;
+                }
+            }
+
+            &:nth-child(2) {
+                color: #EA6900;
+                
+                .score-value {
+                    color: #EA6900 !important;
+                }
+            }
+        }
 
         .score-player:nth-child(1) {
-            color: #60a5fa;
+            color: #097FC5;
             
             .score-value {
-                color: #60a5fa !important;
+                color: #097FC5 !important;
             }
         }
 
         .score-player:nth-child(2) {
-            color: #fb923c;
+            color: #EA6900;
             
             .score-value {
-                color: #fb923c !important;
+                color: #EA6900 !important;
             }
         }
     }
 
-    #btn-exit { 
-        background-color: #3f2f25;
-        border: none;
-        border-radius: 50px;
-        color: #ffedd5;
+    .current-player-display {
+        color: var(--text-color);
+    }
+
+    #btn-exit {
+        font-family: var(--font-theme);
+        background-color: #FFF9F2;
+        color: #F3832D;
+        border: solid 2px ;
+        border-radius: 8px;
+
+        img {
+            content: url('/assets/button-exit/exit-foods.svg');
+        }
         
         &:hover {
-            transform: translateY(-2px);
-            background-color: #4d3a2e;
+            background-color: #F3832D;
+            color: #FFFFFF;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+
+            img {
+                content: url('/assets/button-exit/exit.svg');
+                filter: drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.6));
+            }
         }
     }
 
+    .modal {
+        font-family: var(--font-theme);
+        color: var(--text-color);
+        border-radius: 16px;
+
+        &__title {
+            color: inherit;
+            font-family: inherit;
+        }
+    }
+
+    #btn-back-to-game, 
+    #btn-confirm-exit {
+        font-family: var(--font-theme);
+    }
+
     #btn-back-to-game {
-        background-color: #fb923c;
-        color: white;
-        border: none;
-        border-radius: 50px;
+        background-color: #FFAB3E;
+        color: #FFFFFF;
+        border: solid 2px #F3832D;
+        border-radius: 12px;
+        font-weight: 700;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
         
         &:hover {
-            background-color: #f97316;
-            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+            background-color: #F3832D;
+            color: #FFFFFF;
+        }
+    }
+
+    #btn-confirm-exit {
+        background-color: #FFF9F2;
+        border: solid 2px #F3832D;
+        border-radius: 12px;
+        color: #F3832D;
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+
+        &:hover {
+            background-color: #F3832D;
+            color: #FFFFFF;
         }
     }
 }

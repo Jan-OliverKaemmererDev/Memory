@@ -61,6 +61,7 @@ function setupNavigation() {
             exitModalOverlay.classList.remove('show')
             gamePage.classList.add('hidden')
             landingPage.classList.remove('hidden')
+            applyTheme('theme-code-vibes') // Reset to default theme
         })
     }
 
@@ -72,6 +73,7 @@ function setupNavigation() {
             winnerModalOverlay.classList.remove('show')
             gamePage.classList.add('hidden')
             landingPage.classList.remove('hidden')
+            applyTheme('theme-code-vibes') // Reset to default theme
         })
     }
 }
