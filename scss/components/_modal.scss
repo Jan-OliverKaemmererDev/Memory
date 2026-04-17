@@ -50,6 +50,11 @@
         display: flex;
         justify-content: center;
         gap: 20px;
+
+        @media (max-width: 480px) {
+            flex-direction: column;
+            align-items: stretch;
+        }
     }
 }
 
@@ -62,7 +67,9 @@
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    width: 200px;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
 
     &:hover {
         background-color: color.adjust(#63CDBB, $lightness: -8%);
@@ -78,7 +85,9 @@
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
-    width: 200px;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
 
     &:hover {
         background-color: #63CDBB;

@@ -292,10 +292,15 @@
         }
     }
 
+    label {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
     span:not(.separator) {
         color: $text-color;
         background: rgba(255, 255, 255, 0.08);
-        padding: 0.4rem 1.2rem;
+        padding: clamp(0.3rem, 2vw, 0.4rem) clamp(0.8rem, 3vw, 1.2rem); 
         border-radius: 100px;
         border: 1px solid rgba(255, 255, 255, 0.05);
         white-space: nowrap;
